@@ -173,15 +173,3 @@
          (butlast (seq (.x (.getSol prob))))
          0.0001))))
 
-#_(deftest solve-qp-time-test
-  (let [msize 5000
-        random-matrix (nn/dge (mzi/random-weights msize msize 0))
-        Q (seq (nc/mmt random-matrix))
-        c (first (mzi/random-weights msize 1 1))
-        A (repeat msize [])
-        b []
-        bounds {:lower -100.0 :upper 100.0}
-        [time res] (u/timed (sut/solve-qp Q c A b bounds))]
-    (println (:x res))
-    (println time)
-    (is (< time 2000))))
