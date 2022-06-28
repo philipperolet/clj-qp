@@ -10,9 +10,11 @@
                  [org.clojure/tools.logging "1.1.0"]
 		 [org.clojure/tools.namespace "1.1.0"]
                  [trg-libs "0.3.4"]
-                 [fico/xprs "6.0.0"]]
+                 [fico/xprs "6.0.0"]
+                 [uncomplicate/neanderthal "0.43.2"]]
 
-  :jvm-opts  ["-Dclojure.tools.logging.factory=clojure.tools.logging.impl/jul-factory"]
+  :jvm-opts  ["-Dclojure.tools.logging.factory=clojure.tools.logging.impl/jul-factory"
+              "--add-opens=java.base/jdk.internal.ref=ALL-UNNAMED"]
   :source-paths ["src"]
   :java-source-paths ["test/xpress"]
   :main mzero.qp.xprs

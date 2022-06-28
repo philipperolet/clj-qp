@@ -1,6 +1,17 @@
 (ns mzero.qp.xprs
+  "Module to solve convex quadratic programs:
+  - `solve-qp` solves 0.5 xT.Q.x + cT.x;
+  - `solve-lcls` solves the linearly constrained least squares problem
+  (which is a subset of the above)
+
+  The solving is done by FICO Xpress software:
+  https://www.fico.com/fico-xpress-optimization/docs/latest/solver/optimizer/HTML/GUID-3BEAAE64-B07F-302C-B880-A11C2C4AF4F6.html"
   (:import (com.dashoptimization XPRSprob XPRS))
-  (:require [clojure.spec.alpha :as s]))
+  (:require [clojure.spec.alpha :as s]
+            [uncomplicate.neanderthal
+             [native :as nn]
+             [core :as nc]
+             [linalg :as nl]]))
 
 (defn- transpose [m]
   (let [get-nth-col (fn [col-idx] (vec (map #(nth % col-idx) m)))]
@@ -152,6 +163,9 @@
    (solve-qp Q c A b {})))
 
 (defn solve-lcls [A b C d]
-  "Solve the linearly constrained least squares (LCLS) problem ||Ax-b||² such
-  that Cx-d<=0"
+  "Solve the linearly constrained least squares (LCLS) problem ||`A`x-`b`||² such
+  that `C`x-`d`<=0.
+
+  This is equivalent to minimizing 0.5*xT.AT.A.x - bT.A.x with the
+  same constraints, so turning it to solve-qp params we have Q=AT.A and c=-AT.b"
   (throw (UnsupportedOperationException.)))

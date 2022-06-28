@@ -4,7 +4,11 @@
   (:import (com.dashoptimization XPRSprob XPRS))
   (:require [mzero.qp.xprs :as sut]
             [clojure.test :refer [is deftest testing]]
-            [mzero.utils.utils :as u]))
+            [mzero.utils.utils :as u]
+            [uncomplicate.neanderthal.linalg :as nl]
+            [uncomplicate.neanderthal.native :as nn]
+            [uncomplicate.neanderthal.core :as nc]
+            [uncomplicate.neanderthal.vect-math :as nvm]))
 
 (deftest ^:skip test-runLoadLP
   (testing "Run pure java example running a linear program solving in xpress
@@ -136,6 +140,7 @@
 
 (deftest solve-qp-works-on-toy-examples
   ;; using eq 1/2*xT*Q*x => coeffs need to be doubled
+  ;; see this example https://www.fico.com/fico-xpress-optimization/docs/latest/solver/optimizer/HTML/XPRSloadqp.html
   (let [Q1 (mult-coeffs [[2 -1] [2]] 2)
         c1 [-6 0]
         A1 [[1] [1]]
@@ -173,3 +178,61 @@
          (butlast (seq (.x (.getSol prob))))
          0.0001))))
 
+
+(deftest solve-lcls-works-on-toy-examples
+  (let [;; same example than 1st one on above test converted to lcls form
+        ;; see this example on
+        ;; https://www.fico.com/fico-xpress-optimization/docs/latest/solver/optimizer/HTML/XPRSloadqp.html
+        A [[2 -1] [0 (Math/sqrt 3)]]
+        b [3 0]
+        C [[1] [1]]
+        d [1.9]]
+    (is (u/coll-almost= [1.45 0.45] (:x (sut/solve-lcls A b C d)))))
+  ;; neanderthal lse example
+  ;; https://dragan.rocks/articles/17/Clojure-Numerics-6-More-Linear-Algebra-Fun-with-Least-Squares
+  
+  (testing "Randomly generated, solved via neanderthal"
+    (let [A [[-0.47103711664900716 0.4711996256189164 0.19149367268972872
+          0.6826374087953015 -0.4711996256189164]
+         [-0.9704202466235197 -0.40980861978734295 0.21785053765538154
+          0.6370006012147112 0.21785053765538154]
+         [-0.812766886952843 -0.7147099316750408 0.6633974268721133
+          0.22157110317609596 0.22157110317609596]]
+      b [0.089332 0.1927298 0.74677 -0.533 2.3]
+      unconstrained-optimum '(-1.3885 0.52765 0.137496) ;; computed with neanderthal
+      constrained-optimum '(1.4315978696612757 -1.33975 2.908157)
+      ;; one border constraint (aka equality at the optimum) (1)
+      ;; one inactive constraint (2), one active constraint (3)
+      C [[1] [1] [1]]
+      d1 [-0.723440792] ;; = sum(xopt_i) (manually computed)
+      d2 [3]
+      d3 [-1]]
+  (is (= unconstrained-optimum
+         (sut/solve-lcls A b C d1)
+         (nl/lse (nn/dge A) (nn/dge C) (nn/dv b) (nn/dv d1)))) ;; for control
+  (is (= unconstrained-optimum
+         (sut/solve-lcls A b C d2))) ;; for an inactive constraint, no movement
+  (is (= constrained-optimum
+         (sut/solve-lcls A b C d3)
+         (nl/lse (nn/dge A) (nn/dge C) (nn/dv b) (nn/dv d3)))))))
+
+
+
+(let [A [[-0.57 -1.28 -0.39 0.25 -1.93 1.08]
+           [-0.31 -2.14 2.30 0.24 0.40 -0.35]
+           [-1.93 0.64 -0.66 0.08 0.15 0.30]
+           [0.15 -2.13 -0.02 1.03 -1.43 0.50]]
+        b [-1.50 -2.14 1.23 -0.54 -1.68 0.82]
+        C [[-1 0]
+           [1 0]
+           [0 -1]
+           [0 1]]
+      d [-7 -2]]
+  ;; optimum with both constraints [   7.29    0.29   -3.23   -5.23 ]
+  ;; optimum w/o last constraint [   8.01    1.01   -2.62   -6.50 ]
+  ;; optimum w/o first constraint [   2.56    1.19    0.05   -1.95 ]
+  ;; unconstrained opt [1.747 0.8813 0.017645 -0.97831]
+   ;; so constraints are active as "lower than"
+  (is (= [2.572486 1.121712 -4.42751 -0.87828] (sut/solve-lcls A b C d)))
+  [(nl/lse (nn/dge A) (nn/dge C) (nn/dv b) (nn/dv d))
+   (seq (nl/ls (nn/dge A) (nn/dge (vector b))))])
