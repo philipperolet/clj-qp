@@ -162,10 +162,16 @@
   ([Q c A b]
    (solve-qp Q c A b {})))
 
-(defn solve-lcls [A b C d]
+(defn solve-lcls
   "Solve the linearly constrained least squares (LCLS) problem ||`A`x-`b`||² such
   that `C`x-`d`<=0.
 
   This is equivalent to minimizing 0.5*xT.AT.A.x - bT.A.x with the
   same constraints, so turning it to solve-qp params we have Q=AT.A and c=-AT.b"
-  (throw (UnsupportedOperationException.)))
+  ([A b C d bounds]
+   (let [A' (nc/trans (nn/dge A))
+         Q (seq (nc/mmt A'))
+         c (seq (nc/mv -1.0 A' (nn/dv b)))]
+     (solve-qp Q c C d bounds)))
+  ([A b C d]
+   (solve-lcls A b C d {})))
