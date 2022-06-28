@@ -7,11 +7,7 @@
   The solving is done by FICO Xpress software:
   https://www.fico.com/fico-xpress-optimization/docs/latest/solver/optimizer/HTML/GUID-3BEAAE64-B07F-302C-B880-A11C2C4AF4F6.html"
   (:import (com.dashoptimization XPRSprob XPRS))
-  (:require [clojure.spec.alpha :as s]
-            [uncomplicate.neanderthal
-             [native :as nn]
-             [core :as nc]
-             [linalg :as nl]]))
+  (:require [clojure.spec.alpha :as s]))
 
 (defn- transpose [m]
   (let [get-nth-col (fn [col-idx] (vec (map #(nth % col-idx) m)))]
@@ -162,6 +158,24 @@
   ([Q c A b]
    (solve-qp Q c A b {})))
 
+(defn- multiply-vecs [x1 x2]
+  (reduce #(+ %1 (apply * %2)) 0.0 (map vector x1 x2)))
+
+(defn- tmm
+  "Multiplies the transpose of matrix `M` by `M` itself, returns the
+  result as a symmetric matrix"
+  [M]
+  (let [remaining-cols (fn [index col] (drop index M))
+        multiply-by-remaining-cols
+        (fn [index col]
+          (mapv #(multiply-vecs col %) (remaining-cols index col)))]
+    (vec (map-indexed multiply-by-remaining-cols M))))
+
+(defn- mv
+  "Multiplies matrix A by vector x and scales the result by alpha"
+  [alpha M x]
+  (mapv #(* alpha (multiply-vecs x %)) (transpose M)))
+
 (defn solve-lcls
   "Solve the linearly constrained least squares (LCLS) problem ||`A`x-`b`||² such
   that `C`x-`d`<=0.
@@ -169,9 +183,7 @@
   This is equivalent to minimizing 0.5*xT.AT.A.x - bT.A.x with the
   same constraints, so turning it to solve-qp params we have Q=AT.A and c=-AT.b"
   ([A b C d bounds]
-   (let [A' (nc/trans (nn/dge A))
-         Q (seq (nc/mmt A'))
-         c (seq (nc/mv -1.0 A' (nn/dv b)))]
+   (let [Q (tmm A) c (mv -1.0 (transpose A) b)]
      (solve-qp Q c C d bounds)))
   ([A b C d]
    (solve-lcls A b C d {})))

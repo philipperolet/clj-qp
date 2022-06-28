@@ -241,5 +241,17 @@
                           (:x (sut/solve-lcls A b C d2))))
       (is (u/coll-almost= constrained-optimum
                           (:x (sut/solve-lcls A b C d3))
-                          0.002))
-      (seq (nl/lse (nn/dge A) (nn/dge C) (nn/dv b) (nn/dv d3))))))
+                          0.002)))))
+
+(deftest tmm-mv-test
+  (let [A [[-0.47103711664900716 0.4711996256189164 0.19149367268972872
+              0.6826374087953015 -0.4711996256189164]
+             [-0.9704202466235197 -0.40980861978734295 0.21785053765538154
+              0.6370006012147112 0.21785053765538154]
+             [-0.812766886952843 -0.7147099316750408 0.6633974268721133
+              0.22157110317609596 0.22157110317609596]]
+        b [0.089332 0.1927298 0.74677 -0.533 2.3]]
+    (is (every? (partial apply u/coll-almost=)
+                (map vector (seq (nc/mmt (nc/trans (nn/dge A)))) (#'sut/tmm A))))
+    (is (u/coll-almost= (seq (nc/mv -2.3 (nc/trans (nn/dge A)) (nn/dv b)))
+                        (#'sut/mv -2.3 (#'sut/transpose A) b)))))
