@@ -1,4 +1,4 @@
-(defproject clj-qp "0.1"
+(defproject clj-qp "0.2"
   :description "Lib to solve quadratic programs in clojure, wrapping FICO xpress solver"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
