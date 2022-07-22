@@ -1,7 +1,7 @@
-Next step micros
-- Register on clojars
-- Read tuto
-- Deploy clj-qp 0.3 according to tuto
+**Obj** FINI d'ici essaouira!
+
+Next step micros:
+- read tuto to generate online doc & do 1st step towards it
 
 # Backlog
 ## (13) (of 21) FOSS for clj-qp
@@ -13,7 +13,7 @@ Next step micros
    => no new feats yet, finish as-is
 - (3) Publish
   + create dedicated repo
-  - push as clojure dep
+  + push as clojure dep
   - generate online doc
 - (5) Write doc
   - write README 2
@@ -27,4 +27,11 @@ Next step micros
   - Other places: clojure places 1
 
 # Vision & plan
-Potentially useful software well deployed
+Potentially useful software well deployed => a useful thing done.
+
+# Log
+## wed 22/07
+Deploy clj-qp 0.3
++ Register on clojars
++ Read tuto
++ Deploy clj-qp 0.3 according to tuto
