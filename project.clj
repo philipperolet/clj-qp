@@ -3,7 +3,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :min-lein-version "2.7.1"
-
+  :plugins [[lein-codox "0.10.8"]]
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/test.check "1.1.0"]
                  [org.clojure/data.generators "1.0.0"]
