@@ -1,7 +1,11 @@
 **Obj** FINI d'ici essaouira!
 
 Next step micros:
-- read tuto to generate online doc & do 1st step towards it
+- installer clj-qp sur une machine aws, lein test doit fonctionner correctement
+  - packager le jar fico
+  - supprimer la dep trg-libs
+  - sortir la bonne erreur si fico pas installé
+- Rédiger le début du readme contenant l'install appropriée & la doc fico
 
 # Backlog
 ## (13) (of 21) FOSS for clj-qp
@@ -14,11 +18,11 @@ Next step micros:
 - (3) Publish
   + create dedicated repo
   + push as clojure dep
-  - generate online doc
+  + generate online doc
 - (5) Write doc
   - write README 2
 	- tuto installer 2
-		- try full install on aws machine
+	- try full install on aws machine
 	- context, etc. 1
   - proofread doc & readme 1
 - (3) Advertise 

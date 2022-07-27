@@ -9,10 +9,10 @@
                  [org.clojure/data.generators "1.0.0"]
                  [org.clojure/tools.logging "1.1.0"]
 		 [org.clojure/tools.namespace "1.1.0"]
-                 [trg-libs "0.3.4"]
-                 [fico/xprs "6.0.0"]]  
+                 [trg-libs "0.3.4"]] 
   :source-paths ["src"]
   :java-source-paths ["test/xpress"]
+  :resource-paths ["/home/filou/lib/xpressmp/lib/xprs.jar"]
   :main mzero.qp.xprs
   :test-selectors {:default (fn [m & _] (not (or (:deprecated m) (:skip m))))}
   :repl-options {:init (do (require '[clojure.tools.namespace.repl :refer [refresh]])
