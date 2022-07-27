@@ -1,8 +1,7 @@
 (ns mzero.qp.xprs-speed-test
   (:require [mzero.qp.xprs :as qp]
-            [clojure.test :refer [is testing]]
-            [mzero.utils.testing :refer [deftest]]
-            [mzero.utils.utils :as u]))
+            [clojure.test :refer [is testing deftest]]
+            [mzero.qp.utils :as u]))
 
 (defn scale-float [flt low hi] (+ low (* flt (- hi low))))
 

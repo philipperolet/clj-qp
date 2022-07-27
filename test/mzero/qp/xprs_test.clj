@@ -4,7 +4,7 @@
   (:import (com.dashoptimization XPRSprob XPRS))
   (:require [mzero.qp.xprs :as sut]
             [clojure.test :refer [is deftest testing]]
-            [mzero.utils.utils :as u]
+            [mzero.qp.utils :as u]
             [uncomplicate.neanderthal.linalg :as nl :refer [lse]]
             [uncomplicate.neanderthal.native :as nn :refer [dv dge]]
             [uncomplicate.neanderthal.core :as nc]
