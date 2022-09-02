@@ -1,13 +1,7 @@
-**Obj** FINI d'ici essaouira!
+Done ! (for now)
 
-Next step micros:
-- installer clj-qp sur une machine aws, lein test doit fonctionner correctement
-  - packager le jar fico
-  + supprimer la dep trg-libs
-  - sortir la bonne erreur si fico pas installé
-- Rédiger le début du readme contenant l'install appropriée & la doc fico
 
-# Backlog
+# Done
 ## (13) (of 21) FOSS for clj-qp
 + (1) write solve-lcls
 + (2) Feature convex hull
@@ -15,20 +9,20 @@ Next step micros:
 	- as small as possible, avoid new feats
 	- only very low hanging fruits (e.g. LP)
    => no new feats yet, finish as-is
-- (3) Publish
++ (3) Publish
   + create dedicated repo
   + push as clojure dep
   + generate online doc
-- (5) Write doc
-  - write README 2
-	- tuto installer 2
-	- try full install on aws machine
-	- context, etc. 1
-  - proofread doc & readme 1
-- (3) Advertise 
-  - Linkedin/twitter/hn 1
-  - Website (specific page, quick seo) 1
-  - Other places: clojure places 1
++ (5) Write doc
+  + write README 2
+	+ tuto installer 2
+	+ try full install on aws machine
+	+ context, etc. 1
+  + proofread doc & readme 1
++ (3) Advertise 
+  + Linkedin/twitter/hn 1
+  + Website (specific page, quick seo) 1
+  + Other places: clojure places 1
 
 # Vision & plan
 Potentially useful software well deployed => a useful thing done.

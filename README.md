@@ -1,6 +1,6 @@
-# clj-qp - Quadratic Programming / Optimization in Clojure
+# clj-qp - Quadratic Programming in Clojure
 
-Solve convex [quadratic programs](https://en.wikipedia.org/wiki/Quadratic_programming) (QP) in clojure.
+Solve convex [quadratic programs](https://en.wikipedia.org/wiki/Quadratic_programming) (QP) in clojure, that is optimization of quadratic functions.
 
 This library is a wrapper around the Java API of the [FICO Xpress Solver](https://www.fico.com/fico-xpress-optimization/docs/latest/overview.html).
 
@@ -18,8 +18,14 @@ Leiningen:
 [org.clojars.philipperolet/clj-qp "0.5"]
 ```
 
-### Requirements
-FICO Xpress Optimization **must** be installed for the lib to work, since the library wraps its API. There is a free community version available.
+It is also required to add the resource path `~(str (System/getenv "XPRESSDIR") "/lib/xprs.jar")` to your leiningen `project.clj`, after installing Xpress Optimization as described below. If you have no other resource path it will look like this:
+```
+  :resource-paths [~(str (System/getenv "XPRESSDIR") "/lib/xprs.jar")]
+```
+
+### Requirements - FICO Xpress Optimization
+
+&#x26a0; FICO Xpress Optimization **must** be installed for the lib to work, since the library wraps its API. There is a free community version available.
 
 - Download the [FICO Xpress Optimization package](https://content.fico.com/xpress-optimization-community-license?utm_source=FICO-Community&utm_medium=optimization-homepage)
 - Install FICO Xpress Optimization: [Installation instructions](https://www.fico.com/fico-xpress-optimization/docs/latest/installguide/dhtml/chapinst1.html)
@@ -44,7 +50,7 @@ For a clojure developer, it should be straightforward to extend it to wrap other
 ### Usage limitations
 Please note that the FICO optimization software wrapped by `clj-qp` has limitations depending on the license chosen at the time of installation. The community version is free but has quotas for quadratic program sizes and other usage limitations. Please checks if your intended usage fits the license limitations.
 
-## Important disclaimers
+## &#x26a0; Important disclaimers
 - This library and its authors are not affiliated in any way with FICO and the Xpress Optimization Software
 - This library comes with no warranty or liability as stated in the license
 - The library has been tested for simple uses and research purposes, but has not been tested for production environments
