@@ -1,4 +1,4 @@
-(defproject org.clojars.philipperolet/clj-qp "0.4"
+(defproject org.clojars.philipperolet/clj-qp "0.5"
   :description "Lib to solve quadratic programs in clojure, wrapping FICO xpress solver"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
@@ -11,7 +11,7 @@
 		 [org.clojure/tools.namespace "1.1.0"]] 
   :source-paths ["src"]
   :java-source-paths ["test/xpress"]
-  :resource-paths ["/home/filou/lib/xpressmp/lib/xprs.jar"]
+  :resource-paths [~(str (System/getenv "XPRESSDIR") "/lib/xprs.jar")]
   :main mzero.qp.xprs
   :test-selectors {:default (fn [m & _] (not (or (:deprecated m) (:skip m))))}
   :repl-options {:init (do (require '[clojure.tools.namespace.repl :refer [refresh]])

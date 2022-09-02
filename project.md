@@ -3,7 +3,7 @@
 Next step micros:
 - installer clj-qp sur une machine aws, lein test doit fonctionner correctement
   - packager le jar fico
-  - supprimer la dep trg-libs
+  + supprimer la dep trg-libs
   - sortir la bonne erreur si fico pas installé
 - Rédiger le début du readme contenant l'install appropriée & la doc fico
 
